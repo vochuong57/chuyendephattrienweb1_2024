@@ -16,7 +16,9 @@ $_id = NULL;
 
 if (!empty($_GET['id'])) {
     $_id = decryptId($_GET['id']); // giải mã chuỗi mã hóa ra id để truy cập
-    // echo $_id;
+    $_id = preg_replace('/[^0-9]/', '', $_id); // Chỉ giữ lại ký tự số
+
+    echo $_id;
     if (!empty($_id)) {
         // Chỉ thực hiện truy vấn nếu ID không rỗng
         $user = $userModel->findUserById($_id); //Update existing user

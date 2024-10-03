@@ -1,6 +1,12 @@
 <?php
 session_start(); // Bắt đầu phiên
 
+function decryptId($encryptedId) {
+    $salt = "chuoi_noi_voi_id"; //phải ghi lại đúng chuỗi này ở hàm giải mã thì mới giải mã được ra đúng id
+    $decoded = base64_decode($encryptedId);
+    return str_replace($salt, '', $decoded);
+}
+
 require_once 'models/UserModel.php';
 $userModel = new UserModel();
 
@@ -12,7 +18,7 @@ if (!empty($_GET['id']) && !empty($_GET['csrf_token'])) {
         die('Invalid CSRF token.'); // Dừng thực thi nếu token không hợp lệ
     }
 
-    $id = $_GET['id'];
+    $id = decryptId($_GET['id']);
     
     // Gọi phương thức xóa người dùng
     if ($userModel->deleteUserById($id)) {
