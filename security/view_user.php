@@ -5,8 +5,14 @@ $userModel = new UserModel();
 $user = NULL; //Add new user
 $id = NULL;
 
+function decryptId($encryptedId) {
+    $salt = "chuoi_noi_voi_id"; //phải ghi lại đúng chuỗi này ở hàm giải mã thì mới giải mã được ra đúng id
+    $decoded = base64_decode($encryptedId);
+    return str_replace($salt, '', $decoded);
+}
+
 if (!empty($_GET['id'])) {
-    $id = $_GET['id'];
+    $id = decryptId($_GET['id']);
     $user = $userModel->findUserById($id);//Update existing user
 }
 

@@ -43,21 +43,54 @@ class UserModel extends BaseModel {
 
     }
 
+    function decryptId($encryptedId) {
+        $salt = "chuoi_noi_voi_id"; //phải ghi lại đúng chuỗi này ở hàm giải mã thì mới giải mã được ra đúng id
+        $decoded = base64_decode($encryptedId);
+        return str_replace($salt, '', $decoded);
+    }
+
     /**
      * Update user
      * @param $input
      * @return mixed
      */
     public function updateUser($input) {
+        // Lấy version hiện tại từ DB
+        $sqlSelectVersion = 'SELECT version FROM users WHERE id = ' . decryptId($input['id']);
+        $result = mysqli_query(self::$_connection, $sqlSelectVersion);
+        $currentVersion = 0;
+        
+        if ($row = mysqli_fetch_assoc($result)) {
+            $currentVersion = (int)$row['version'];  // Ép kiểu version sang số nguyên (BIGINT)
+        }
+    
+        // Kiểm tra nếu version trong DB lớn hơn version từ input
+        if ($input['version'] < $currentVersion) {
+            // Hiển thị thông báo popup và quay lại trang cập nhật với ID đã mã hóa
+            echo '<script>
+                    alert("Dữ liệu đã thay đổi. Chúng tôi đã tải lại dữ liệu mới nhất cho bạn.");
+                    window.location.href = "http://localhost/chuyendephattrienweb1_2024/security/form_user.php?id=' . base64_encode(decryptId($input['id']) . 'chuoi_noi_voi_id') . '"; 
+                </script>';
+
+            die();
+        }
+
+
+        // Cộng thêm 1 vào version hiện tại
+        $newVersion = $currentVersion + 1;
+    
+        // Cập nhật thông tin user bao gồm cả version
         $sql = 'UPDATE users SET 
                  name = "' . mysqli_real_escape_string(self::$_connection, $input['name']) .'", 
-                 password="'. md5($input['password']) .'"
-                WHERE id = ' . $input['id'];
-
+                 password = "' . md5($input['password']) . '", 
+                 version = ' . $newVersion . ' 
+                WHERE id = ' . decryptId($input['id']) . ' AND version = ' . $input['version'];  // Kiểm tra version trùng khớp
+    
+        // Thực hiện update
         $user = $this->update($sql);
-
+    
         return $user;
-    }
+    }    
 
     /**
      * Insert user
@@ -66,7 +99,7 @@ class UserModel extends BaseModel {
      */
     public function insertUser($input) {
         $sql = "INSERT INTO `app_web1`.`users` (`name`, `password`) VALUES (" .
-                "'" . $input['name'] . "', '".md5($input['password'])."')";
+                "'" . htmlentities($input['name']) . "', '".md5(htmlentities($input['password']))."')";
 
         $user = $this->insert($sql);
 
