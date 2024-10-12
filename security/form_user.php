@@ -18,7 +18,9 @@ if (!empty($_GET['id'])) {
     $_id = decryptId($_GET['id']); // giải mã chuỗi mã hóa ra id để truy cập
     // echo $_id;
     if (!empty($_id)) {
+        $_id = preg_replace('/[^0-9]/', '', $_id); // Chỉ giữ lại ký tự số
         // Chỉ thực hiện truy vấn nếu ID không rỗng
+        echo $_id;
         $user = $userModel->findUserById($_id); //Update existing user
     }
 }
@@ -83,7 +85,7 @@ if (!empty($_id)){// trường hợp sửa user mới cần validate
                 </div>
             <?php } ?>
             <form method="POST">
-                <input type="hidden" name="id" value="<?php echo $_id ?>">
+                <input type="hidden" name="id" value="<?php echo base64_encode($_id . 'chuoi_noi_voi_id') ?>">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input class="form-control" name="name" placeholder="Name" value='<?php if (!empty($user[0]['name'])) echo $user[0]['name'] ?>'>
@@ -92,7 +94,7 @@ if (!empty($_id)){// trường hợp sửa user mới cần validate
                     <label for="password">Password</label>
                     <input type="password" name="password" class="form-control" placeholder="Password">
                 </div>
-
+                    <input type="hidden" name="version" value="<?php echo $user[0]['version'] ?>">
                 <button type="submit" name="submit" value="submit" class="btn btn-primary">Submit</button>
             </form>
         <?php } else { ?>

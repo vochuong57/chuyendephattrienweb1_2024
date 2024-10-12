@@ -44,7 +44,7 @@ if(!empty($_GET['keyword'])) {
                             Account <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="view_user.php?id=<?php echo $id ?>">Profile</a></li>
+                            <li><a href="view_user.php?id=<?php echo base64_encode($id.'chuoi_noi_voi_id') ?>">Profile</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/chuyendephattrienweb1_2024/security/login.php">Login</a></li>
                             <li><a href="/chuyendephattrienweb1_2024/security/logout.php">Logout</a></li>
