@@ -1,0 +1,122 @@
+
+.type-3177 {
+
+
+
+    background-color: #fff;
+    padding-top: 0.05px;
+    padding-bottom: 0.05px;
+    text-align:center;
+    font-family: 'Roboto Condensed', sans-serif;
+
+    .navbar {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .navbar-brand img {
+        width: 90px;
+        height: 50px;
+    }
+
+    .navbar-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .navbar-nav {
+        list-style-type: none;
+        display: flex;
+        justify-content: center;
+        padding-top: 30px;
+    }
+
+    .navbar-nav li {
+        padding: 0 15px;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .form-inline {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-top: 30px;
+    }
+
+    .form-inline .form-control {
+        border: 1px solid #000;
+        border-radius: 0;
+        font-style: italic;
+        padding-right: 40px;
+    }
+
+    .form-control::placeholder {
+        font-weight: bold;
+    }
+
+    .form-inline .btn {
+        position: absolute;
+        right: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding-top: 35px;
+    }
+
+    .form-inline .btn i {
+        font-size: 18px;
+        color: #000;
+    }
+
+    .mobile-nav img{
+        display: hidden;
+    }
+
+    @media (max-width: 991px) {
+        .navbar-nav, .form-inline{
+            display: none;
+        }
+        .mobile-nav {
+            display: block !important;
+        }
+        .mobile-nav img{
+            width: 40px;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .mobile-nav img{
+            width: 40px;
+            position: absolute;
+            top: 22px;
+            right: 22px;
+        }
+        .navbar-brand{
+            position: absolute;
+            left: 22px;
+        }
+    }   
+
+}
+
+
+
+
+
+
+
+
+
+
+
